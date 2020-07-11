@@ -111,7 +111,11 @@ int find_sub(struct User *team)
 }
 
 void add_to_sub_reactor(struct User *user) {
+    struct ChatMsg msg;
     struct User *team = (user -> team ? bteam : rteam);
+    msg.type = CHAT_SYS;
+    sprintf(msg.msg, "%s 已上线\n", user->name);
+    send_all(&msg);
     DBG(YELLOW"Main Thread : "NONE"Add to sub_reactor\n");
     if (user->team) {
         pthread_mutex_lock(&bmutex);

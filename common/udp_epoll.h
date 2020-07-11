@@ -11,4 +11,6 @@ int udp_accept(int fd, struct User *user);
 int check_online(struct LogRequest *request);
 void add_to_sub_reactor(struct User *user);
 void del_event(int epollfd, int fd);
+void send_all(struct ChatMsg *msg);
+void send_to(char *to, struct ChatMsg *msg, int fd);
 #endif

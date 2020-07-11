@@ -54,6 +54,7 @@ void do_work(struct User *user){
     bzero(&msg, sizeof(msg));
     bzero(&r_msg, sizeof(r_msg));
     recv(user->fd, (void *)&msg, sizeof(msg), 0);
+    strcpy(msg.name, user->name);
     if (msg.type & CHAT_WALL) {
         printf("<%s> ~ %s \n", user->name, msg.msg);
         send_all(&msg);
@@ -96,6 +97,29 @@ void do_work(struct User *user){
         }
         printf(GREEN"Server Info"NONE" : %s logout!\n", user->name);
         close(user->fd);
+    } else if (msg.type & CHAT_FUNC) {
+        printf("after FUNC\n");
+        if (msg.msg[1] == '1') {
+            printf("after msg==1\n");
+            bzero(r_msg.msg,  sizeof(r_msg.msg));
+            r_msg.type = CHAT_SYS;
+            sprintf(r_msg.msg, "当前有");
+            for (int i = 0; i < MAX; i++) {
+                if (rteam[i].online) {
+                    strcat(r_msg.msg, rteam[i].name);
+                    strcat(r_msg.msg, " ");
+                }
+                if (bteam[i].online) {
+                    strcat(r_msg.msg, bteam[i].name);
+                    strcat(r_msg.msg, " ");
+                }
+            }
+            strcat(r_msg.msg, "这些成员在线");
+            printf("%s\n", r_msg.msg);
+            send(user->fd, (void *)&r_msg, sizeof(r_msg),0);
+            //send_all(&r_msg);
+        }
+        
     }
    // printf("%s\n", buff);
   //  sprintf(buff, "hhh");

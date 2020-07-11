@@ -95,11 +95,11 @@ int main(int argc, char **argv) {
     } else if (retval) {
         int ret = recvfrom(sockfd, (void *)&response, sizeof(response), 0, (struct sockaddr *)&server, &len);
         if (ret != sizeof(response) || response.type) {
-            DBG(RED"Error"NONE"The Game Server refused your login.\n\tThis is helpful: %s\n", response.msg);
+            printf(RED"Error"NONE"The Game Server refused your login.\n\tThis is helpful: %s\n", response.msg);
             exit(1);
         }
     } else {
-        DBG(RED"Error"NONE"The Game Server is out of service!\n");
+        printf(RED"Error"NONE"The Game Server is out of service!\n");
         exit(1);
     }
 
@@ -121,7 +121,7 @@ int main(int argc, char **argv) {
     while (1) {
         bzero(&msg, sizeof(msg));
         msg.type = CHAT_WALL;
-        printf(RED"Please Input: \n"NONE);
+       // printf(RED"Please Input: \n"NONE);
         scanf("%[^\n]s", msg.msg);
         getchar();
         if (strlen(msg.msg)) {
